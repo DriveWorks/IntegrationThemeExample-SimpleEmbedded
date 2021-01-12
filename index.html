@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Simple Example - Embedded | DriveWorks</title>
+
+    <style>
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-size: 16px;
+            font-family: sans-serif;
+            background-color: #eee;
+        }
+
+        .output {
+            position: relative;
+            min-height: 15em;
+            margin: 2em 0;
+            background-color: #fff;
+        }
+
+        /* (Optional) Loading Styles */
+        .output.is-loading::before {
+            content: "";
+            position: absolute;
+            display: block;
+            font-size: 4em;
+            width: 1em;
+            height: 1em;
+            top: 50%;
+            left: 50%;
+            margin: -0.5em 0 0 -0.5em;
+            border: 10px solid #ddd;
+            border-top: 10px solid #222;
+            border-radius: 50%;
+            box-sizing: border-box;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Demo Site Structure */
+        .demo-site {
+            max-width: 1200px;
+            padding: 3em 1.25em;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2em;
+            margin: 0 0 1em;
+        }
+
+        p {
+            font-size: 1.25em;
+            line-height: 1.4;
+            margin: 0 0 1em;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="demo-site">
+
+        <h1>Engage customers with a configurator embedded on your website.</h1>
+        <p>Below is a Specification embedded directly into existing page content - without an iFrame.</p>
+
+        <!-- Render Area -->
+        <div id="specification-output" class="output is-loading"></div>
+
+        <p>You can use the Web API to embed DriveWorks Forms anywhere in a new or existing website.</p>
+        <p>Any visitors can then interact with your Form, just like any other site feature, using native web technologies in modern browsers.</p>
+        <p>A Form can be placed deep within the structure of a site, and responds to the width of the container & browser.</p>
+
+    </div>
+
+    <!-- Load Client SDK library -->
+    <!-- Replace "YOUR-DRIVEWORKS-LIVE-SERVER-URL" with your DriveWorks Live server address, which serves the landing page -->
+    <script src="https://YOUR-DRIVEWORKS-LIVE-SERVER-URL/DriveWorksLiveIntegrationClient.min.js"></script>
+
+    <!-- Load Configuration -->
+    <script src="config.js"></script>
+
+    <script async>
+
+        const specificationOutput = document.getElementById("specification-output");
+
+        // Create DriveWorks API client
+        const DW_CLIENT = new window.DriveWorksLiveClient(config.serverUrl);
+
+        // Run on load
+        (async function () {
+
+            try {
+
+                // Login to group
+                const session = await DW_CLIENT.loginGroup(config.groupAlias);
+
+                // Create new specification
+                const specification = await DW_CLIENT.createSpecification(config.groupAlias, config.projectName);
+
+                // Render specification
+                await specification.render(specificationOutput);
+
+                // Remove loading style
+                specificationOutput.classList.remove("is-loading");
+
+                // (Optional) Prevent Specification timeout
+                pingSpecification(specification);
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        })();
+
+        /**
+         * Prevent Specification timeout
+         * 
+         * A Specification will timeout after a configured period of inactivity (see DriveWorksConfigUser.xml).
+         * This function prevents a Specification timing out as long as the page is in view.
+         * 
+         * @param specification The Specification object.
+         */
+         function pingSpecification(specification) {
+
+            // Disable ping if interval is 0
+            if (config.specificationPingInterval === 0) {
+                return;
+            }
+
+            // Ping Specification to reset timeout
+            specification.ping();
+
+            // Schedule next ping
+            setTimeout(pingSpecification, config.specificationPingInterval * 1000, specification);
+
+        }
+
+    </script>
+
+</body>
+</html>
