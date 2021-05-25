@@ -1,15 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Simple Example - Embedded | DriveWorks</title>
-
     <style>
-
         html,
         body {
             height: 100%;
@@ -28,7 +23,8 @@
 
         /* (Optional) Loading Styles */
         .output.is-loading::before {
-            content: "";
+            box-sizing: border-box;
+            content: '';
             position: absolute;
             display: block;
             font-size: 4em;
@@ -40,7 +36,6 @@
             border: 10px solid #ddd;
             border-top: 10px solid #222;
             border-radius: 50%;
-            box-sizing: border-box;
             animation: spin 1s linear infinite;
         }
 
@@ -66,9 +61,7 @@
             line-height: 1.4;
             margin: 0 0 1em;
         }
-
     </style>
-
 </head>
 
 <body>
@@ -87,24 +80,18 @@
 
     </div>
 
-    <!-- Load Client SDK library -->
-    <!-- Replace "YOUR-DRIVEWORKS-LIVE-SERVER-URL" with your DriveWorks Live server address, which serves the landing page -->
-    <script src="https://YOUR-DRIVEWORKS-LIVE-SERVER-URL/DriveWorksLiveIntegrationClient.min.js"></script>
-
-    <!-- Load Configuration -->
+    <!-- Scripts -->
     <script src="config.js"></script>
 
-    <script async>
-
+    <script>
         const specificationOutput = document.getElementById("specification-output");
 
-        // Create DriveWorks API client
-        const DW_CLIENT = new window.DriveWorksLiveClient(config.serverUrl);
-
         // Run on load
-        (async function () {
-
+        async function dwClientLoaded() {
             try {
+
+                // Create DriveWorks API client
+                const DW_CLIENT = new window.DriveWorksLiveClient(config.serverUrl);
 
                 // Login to group
                 const session = await DW_CLIENT.loginGroup(config.groupAlias);
@@ -120,12 +107,10 @@
 
                 // (Optional) Prevent Specification timeout
                 pingSpecification(specification);
-
             } catch (error) {
                 console.log(error);
             }
-
-        })();
+        }
 
         /**
          * Prevent Specification timeout
@@ -147,9 +132,20 @@
 
             // Schedule next ping
             setTimeout(pingSpecification, config.specificationPingInterval * 1000, specification);
-
         }
+    </script>
 
+    <!-- OPTION A) Directly load Client Library -->
+    <!-- <script src="https://YOUR-DRIVEWORKS-LIVE-SERVER-URL.COM/DriveworksLiveIntegrationClient.min.js" onload="dwClientLoaded()"></script> -->
+
+    <!-- OPTION B) Inject Client Library dynamically from server url in config file -->
+    <script>
+        (function(doc, script) {
+            script = doc.createElement("script");
+            script.src = config.serverUrl + "/DriveWorksLiveIntegrationClient.min.js";
+            script.onload = () => dwClientLoaded(); // Custom local function run when client has loaded
+            doc.body.appendChild(script);
+        }(document));
     </script>
 
 </body>
