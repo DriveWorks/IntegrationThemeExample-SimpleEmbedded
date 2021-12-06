@@ -1,4 +1,4 @@
-# DriveWorks Live - Integration Theme Example - Embedded Form
+# Integration Theme Example - Embedded Form
 ### Release: 19.2
 #### Minimum DriveWorks Version: 18.0
 
@@ -7,10 +7,13 @@ A distributable template that renders a predefined project into an embedded sect
 Please note: DriveWorks are not accepting pull requests for this example.  
 Join our [online community](https://my.driveworks.co.uk) for discussion, resources and to suggest other examples.
 
-### This example:
-- Renders a DriveWorks Form embedded within page content - no other UI
-- Uses very simple HTML/CSS/JS
-- Has an optional loading state (to avoid an initial empty output)
+### Overview:
+- Dynamically injects the DriveWorks Live Client library script using the configured server url (see config.js).
+    - Provides an example of loading from a static URL, if preferred.
+- Connects to the DriveWorks Live Integration Theme API.
+- Renders a DriveWorks Form embedded within placeholder page content.
+- Uses basic HTML/CSS/JS.
+- Optional loading state - to avoid an initial empty output.
 
 ### To use:
 1. Clone this repository, or download as a .zip
@@ -48,6 +51,7 @@ If you are unable to use the dynamic library loading demonstrated in this exampl
         * Ensure you are running DriveWorks 18.2 or above
         * Ensure HTTPS is enabled in DriveWorks Live's settings
         * Ensure a valid SSL certificate has been configured via DriveWorksConfigUser.xml.
+        * Ensure if using an incognito/private window, third-party cookies are not blocked (see browser settings).
         * See [Integration Theme Settings](https://docs.driveworkspro.com/Topic/IntegrationThemeSettings) for additional guidance.
 
 ---
