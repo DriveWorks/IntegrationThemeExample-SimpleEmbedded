@@ -1,5 +1,5 @@
-# Integration Theme Example - Embedded Form
-### Release: 19.2
+# DriveWorks Live - Integration Theme Example - Simple Embedded Form
+### Release: 20.0
 #### Minimum DriveWorks Version: 18.0
 
 A distributable template that renders a predefined project into an embedded section of the page - set via a config file.
@@ -48,7 +48,6 @@ If you are unable to use the dynamic library loading demonstrated in this exampl
     * This should be the URL that hosts the Integration Theme, and serves it's landing page.
     * To check that this URL is correct, attempt to load DriveWorksLiveIntegrationClient.min.js in a browser. It should return a minified code library.
 2. Remove the "Option B" `<script>` tag.
-
 
 ### Potential Issues:
 
