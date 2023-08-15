@@ -1,5 +1,5 @@
 # DriveWorks Live - Integration Theme Example - Simple Embedded Form
-### Release: 20.1
+### Release: 21.0
 #### Minimum DriveWorks Version: 18.0
 
 A distributable template that renders a predefined project into an embedded section of the page - set via a config file.
